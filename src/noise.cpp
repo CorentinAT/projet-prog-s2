@@ -6,6 +6,9 @@
 
 #include <cstdint>
 #include <functional>
+#include <cstdlib>
+
+
 
 namespace {
 
@@ -46,7 +49,6 @@ float perlinNoiseSeeded(glm::vec2 const& position, int seed) {
     // Cache computed offset because the same seed is used for many samples per frame.
     static int cachedSeed {};
     static glm::vec2 cachedOffset {};
-
     if (seed != cachedSeed) {
         cachedSeed = seed;
         cachedOffset = seedToOffset2D(seed);
@@ -65,17 +67,20 @@ float octaveNoise(glm::vec2 const& position, std::function<float(glm::vec2 const
     float const lacunarity = 2.0f;
     float gain = 1.0f;
     float scale = 1.0f;
+    
 
     float total = 0.0f;
     float maxAmplitude = 0.0f;
 
     for (int i = 0; i < octaves; ++i) {
-        total += noiseFunction(position * frequency) * (amplitude * gain);
-        maxAmplitude += amplitude;
+    total += noiseFunction(position * frequency)
+           * amplitude;
 
-        amplitude *= persistence;
-        frequency *= lacunarity;
-    }
+    maxAmplitude += amplitude;
+
+    amplitude *= persistence;
+    frequency *= lacunarity;
+}
 
     return total / maxAmplitude;
     

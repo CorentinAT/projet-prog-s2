@@ -3,9 +3,10 @@
 #include "raylib.h"
 #include "glm/glm.hpp"
 #include <vector>
+#include "lib/random.hpp"
 
 struct ImageGenerationParameters {
-    int noiseSeed { 0 };
+    int noiseSeed { random_int(1, 20000) };
     float noiseScale { 4.0f };
     int resolution { 256 };
 };
