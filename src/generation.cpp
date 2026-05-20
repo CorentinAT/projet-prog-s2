@@ -6,21 +6,78 @@
 #include "utils/raylibUtils.hpp"
 #include <algorithm> // for std::clamp
 
+#include "lib/random.hpp"
 
 std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationParameters const& params) {
-    std::vector<glm::vec2> positions {};
+    int regionSize = 1000;
 
-    positions.reserve(1000);
-    // Naive random generation
-    for (int i {0}; i < 1000; ++i)
-    {
-        positions.emplace_back(
-            static_cast<float>(GetRandomValue(0, INT_MAX)) / static_cast<float>(INT_MAX),
-            static_cast<float>(GetRandomValue(0, INT_MAX)) / static_cast<float>(INT_MAX)
-        );
+    std::vector<glm::vec2> positions {};
+    std::vector<glm::vec2> spawnPositions {};
+
+    positions.reserve(regionSize);
+
+    float cellSize = params.radius / sqrt(2.);
+
+    int cols = (int)std::ceil(regionSize / cellSize);
+    int rows = (int)std::ceil(regionSize / cellSize);
+
+    std::vector<std::vector<int>> grid(cols, std::vector<int>(rows, -1));
+
+    glm::vec2 firstPoint = {random_int(0, regionSize), random_int(0, regionSize)};
+
+    positions.push_back(firstPoint);
+    spawnPositions.push_back(firstPoint);
+    grid[(int)(firstPoint.x / cellSize)][(int)(firstPoint.y / cellSize)] = 0;
+
+    while(spawnPositions.size() > 0) {
+        int spawnIndex = random_int(0, spawnPositions.size());
+        glm::vec2 spawnCenter = spawnPositions[spawnIndex];
+        bool candidateAccepted = false;
+
+        for(int i = 0; i < params.kPoints; i++) {
+            float angle = random_float(0., 1.) * PI * 2.;
+            glm::vec2 dir = {sin(angle), cos(angle)};
+            glm::vec2 candidate = spawnCenter + dir * random_float((float)(params.radius), (float)(params.radius) * 2.);
+
+            if(candidate.x < 0 || candidate.x >= regionSize || candidate.y < 0 || candidate.y >= regionSize) {
+                continue;
+            }
+
+            int cellX = (int)(candidate.x / cellSize);
+            int cellY = (int)(candidate.y / cellSize);
+
+            bool isValid = true;
+            for(int deltaX = -2; deltaX <= 2 && isValid; deltaX++) {
+                for(int deltaY = -2; deltaY <= 2 && isValid; deltaY++) {
+                    int neighborX = cellX + deltaX;
+                    int neighborY = cellY + deltaY;
+                    if(neighborX >= 0 && neighborX < cols && neighborY >= 0 && neighborY < rows && grid[neighborX][neighborY] != -1) {
+                        float dist = glm::length(candidate - positions[grid[neighborX][neighborY]]);
+                        if(dist < params.radius) {
+                            isValid = false;
+                        }
+                    }
+                }
+            }
+
+            if(isValid) {
+                positions.push_back(candidate);
+                spawnPositions.push_back(candidate);
+                grid[cellX][cellY] = positions.size() - 1;
+                candidateAccepted = true;
+                break;
+            }
+        }
+        if(!candidateAccepted) {
+            spawnPositions.erase(spawnPositions.begin() + spawnIndex);
+        }
     }
 
-    // TODO(student): implement Poisson disk sampling to replace the above naive random generation
+    for(int i = 0; i < static_cast<int>(positions.size()); i++) {
+        positions[i].x = positions[i].x / regionSize;
+        positions[i].y = positions[i].y / regionSize;
+    }
+    
     // points output should be in [0..1] range, where (0,0) is one corner of the terrain and (1,1) is the opposite corner, so they can be easily scaled to terrain size and sampled from heightmap.
     return positions;
 }
