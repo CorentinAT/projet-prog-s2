@@ -34,7 +34,7 @@ std::vector<glm::vec2> generate2DPositions([[maybe_unused]] PointsGenerationPara
         glm::vec2 spawnCenter = spawnPositions[spawnIndex];
         bool candidateAccepted = false;
 
-        for(int i = 0; i < params.kPoints; i++) {
+        for(int i = 0; i < params.nbTries; i++) {
             float angle = random_float(0., 1.) * PI * 2.;
             glm::vec2 dir = {sin(angle), cos(angle)};
             glm::vec2 candidate = spawnCenter + dir * random_float((float)(params.radius), (float)(params.radius) * 2.);
