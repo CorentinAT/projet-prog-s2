@@ -145,15 +145,20 @@ void generateHeightmap(AppContext& context) {
     context.heightmapImage = GenImageFromNoiseFunction<float>(resolution, resolution, PIXELFORMAT_UNCOMPRESSED_R32,
         [&](glm::vec2 const& p)->float {
             // TODO(student): implement stack based noise and island mask
-
-            return (perlinNoiseSeeded(p * context.imageGenerationParameters.noiseScale, context.imageGenerationParameters.noiseSeed) * 0.5f + 0.5f);
+                
+            return (octaveNoise(p * context.imageGenerationParameters.noiseScale, 
+                [&](glm::vec2 const& p)->float {
+                  return  perlinNoiseSeeded(p, context.imageGenerationParameters.noiseSeed);
+                },
+                context 
+            ) * 0.5f + 0.5f)-0.1f;
         });
 
     // exemple conversion from heightmap to color image
     context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const& v, int const, int const) {
         if (v < 0.3f)
         {
-            return color_from({ 70, 130, 180 }); // water
+            return color_from({ 120, 180, 230 }); // water
         }
         else if (v < 0.5f)
         {
@@ -161,7 +166,7 @@ void generateHeightmap(AppContext& context) {
         }
         else
         {
-            return color_from({ 34, 139, 34 }); // grass
+            return color_from({ 84, 189, 84 }); // grass
         }
         
     }, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
