@@ -17,30 +17,37 @@ void draw3DScene(AppContext& context) {
     Vector3 const terrainCenterOffset { terrainCentering.m12, terrainCentering.m13, terrainCentering.m14 };
 
     DrawModel(context.model, terrainCenterOffset, 1.0f, WHITE);
-    drawCubes(context, terrainCentering);
+    drawCows(context, terrainCentering);
     DrawGrid(20, 1.0f);
 
     EndMode3D();
 }
 
-void drawCubes(AppContext const& context, Matrix const& terrainCentering)
+void drawCows(AppContext const& context, Matrix const& terrainCentering)
 {
     if (context.objectPositions.empty()) {
         return;
     }
 
-    float const cubeHalfHeight { 0.5f * context.cubeScale };
+    float const cowHalfHeight { 0.5f * context.cowScale };
 
     for (glm::vec3 const& pos : context.objectPositions) {
         Matrix const objectTranslation { MatrixTranslate(
             pos.x * context.terrainSize.x,
-            pos.z * context.terrainSize.y + cubeHalfHeight,
+            pos.z * context.terrainSize.y + cowHalfHeight,
             pos.y * context.terrainSize.z
         )};
         Matrix const centeredTranslation { MatrixMultiply(objectTranslation, terrainCentering) };
-        Matrix const scale { MatrixScale(context.cubeScale, context.cubeScale, context.cubeScale) };
+        Matrix const scale { MatrixScale(context.cowScale, context.cowScale, context.cowScale) };
         Matrix const transform { MatrixMultiply(scale, centeredTranslation) };
-        DrawMesh(context.cube, context.cubeMaterial, transform);
+
+        Vector3 pos3d {
+            centeredTranslation.m12,
+            centeredTranslation.m13,
+            centeredTranslation.m14
+        };
+        DrawModelEx(context.objectModel, pos3d, {0,1,0}, 0.0f,
+        {context.cowScale, context.cowScale, context.cowScale}, WHITE);
     }
 }
 
@@ -62,7 +69,7 @@ void drawImGui(AppContext& context) {
     }
 
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen)) {
-        ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);
+        ImGui::SliderFloat("Cow Scale", &context.cowScale, 0.005f, 0.1f);
         ImGui::SliderInt("Octaves", &params.octaves, 5, 12);
         ImGui::SliderFloat("Lacunarity", &params.lacunarity, 0.5f, 2.0f);
         ImGui::SliderFloat("Frequency", &params.frequency, 0.5f, 2.0f);

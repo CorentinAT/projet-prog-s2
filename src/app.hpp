@@ -48,10 +48,11 @@ struct AppContext {
 
     std::vector<glm::vec3> objectPositions {};
 
-    // A simple cube mesh and material we use to draw objects on the terrain.
-    Mesh cube {};
-    Material cubeMaterial {};
-    float cubeScale { 0.1f };
+    // A simple cow mesh and material we use to draw objects on the terrain.
+    Mesh cow {};
+    Material cowMaterial {};
+    Model objectModel {};
+    float cowScale { 0.02f };
 
     // Parameters for object positions generation
     PointsGenerationParameters pointsGenerationParameters;

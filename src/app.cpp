@@ -24,14 +24,9 @@ void unload(AppContext& context) {
         context.mesh = {};
     }
 
-    if (context.cubeMaterial.shader.id > 0) {
-        UnloadMaterial(context.cubeMaterial);
-        context.cubeMaterial = {};
-    }
-
-    if (context.cube.vertexCount > 0) {
-        UnloadMesh(context.cube);
-        context.cube = {};
+    if (context.objectModel.meshCount > 0) {
+        UnloadModel(context.objectModel);
+        context.objectModel = {};
     }
 }
 

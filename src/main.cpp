@@ -5,6 +5,7 @@
 #include "app.hpp"
 #include "draw.hpp"
 #include "generation.hpp"
+#include "utils/pathUtils.hpp"
 
 int main() {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
@@ -27,9 +28,8 @@ int main() {
 
     AppContext context {};
 
-    context.cube = GenMeshCube(1.0f, 1.0f, 1.0f);
-    context.cubeMaterial = LoadMaterialDefault();
-    context.cubeMaterial.maps[MATERIAL_MAP_DIFFUSE].color = RED;
+    std::filesystem::path const modelPath { pathUtils::make_absolute_path("resources/cow.glb") };
+    context.objectModel = LoadModel(modelPath.string().c_str());
     
     // Define our custom camera to look into our 3d world
     context.camera = {
