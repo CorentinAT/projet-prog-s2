@@ -45,12 +45,19 @@ void drawCubes(AppContext const& context, Matrix const& terrainCentering)
 }
 
 void drawImGui(AppContext& context) {
+    auto& params = context.imageGenerationParameters;
     if(ImGui::Button("Generate random positions")) {
         generateObjectsPositions(context);
+    }
+    if(ImGui::Button("Refresh")) {
+        generateHeightmap(context);
+        draw3DScene(context);
+        
     }
 
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);
+        ImGui::SliderInt("Octaves", &params.octaves, 5, 12);
     }
 }
 

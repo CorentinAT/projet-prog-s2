@@ -6,10 +6,20 @@
 #include "lib/random.hpp"
 
 struct ImageGenerationParameters {
-    int noiseSeed { random_int(1, 20000) };
+    int noiseSeed { random_int(1, 20) };
     float noiseScale { 4.0f };
     int resolution { 256 };
+    int octaves = 12;
+    float amplitude = 1.0f;
+    float frequency = 1.0f;
+    float persistence = 0.5f;
+    float lacunarity = 1.5f;
+    float gain = 1.0f;
+    float scale = 1.0f;
+    float total = 0.0f;
+    float maxAmplitude = 0.0f;
 };
+
 
 struct PointsGenerationParameters {
     // TODO(student): add parameters for points generation (ex: poisson disk radius, etc).

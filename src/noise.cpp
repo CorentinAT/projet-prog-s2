@@ -1,5 +1,6 @@
 
 #include "noise.hpp"
+#include "generation.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/noise.hpp>
@@ -57,32 +58,34 @@ float perlinNoiseSeeded(glm::vec2 const& position, int seed) {
     return glm::perlin(position + cachedOffset);
 }
 
-float octaveNoise(glm::vec2 const& position, std::function<float(glm::vec2 const&)> noiseFunction) {
+float octaveNoise(glm::vec2 const& position, std::function<float(glm::vec2 const&)> noiseFunction, AppContext& context) {
     // TODO(student): Implement octave/fractal noise accumulation.
     // Temporary fallback return directly from the provided noise function for testing.
-    int const octaves = 5;
+    /* int const octaves = 12;
     float amplitude = 1.0f;
     float frequency = 1.0f;
     float const persistence = 0.5f;
-    float const lacunarity = 2.0f;
+    float const lacunarity = 1.5f;
     float gain = 1.0f;
     float scale = 1.0f;
     
 
     float total = 0.0f;
     float maxAmplitude = 0.0f;
+    */
+   auto params {context.imageGenerationParameters};
 
-    for (int i = 0; i < octaves; ++i) {
-    total += noiseFunction(position * frequency)
-           * amplitude;
+    for (int i = 0; i < params.octaves; ++i) {
+    params.total += noiseFunction(position * params.frequency)
+           * params.amplitude;
 
-    maxAmplitude += amplitude;
+    params.maxAmplitude += params.amplitude;
 
-    amplitude *= persistence;
-    frequency *= lacunarity;
+    params.amplitude *= params.persistence;
+    params.frequency *= params.lacunarity;
 }
 
-    return total / maxAmplitude;
+    return params.total / params.maxAmplitude;
     
    // return noiseFunction(position);
 }

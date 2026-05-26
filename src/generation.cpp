@@ -88,8 +88,9 @@ void generateHeightmap(AppContext& context) {
             return (octaveNoise(p * context.imageGenerationParameters.noiseScale, 
                 [&](glm::vec2 const& p)->float {
                   return  perlinNoiseSeeded(p, context.imageGenerationParameters.noiseSeed);
-                }
-            ) * 0.5f + 0.5f);
+                },
+                context 
+            ) * 0.5f + 0.5f)-0.1f;
         });
 
     // exemple conversion from heightmap to color image
