@@ -14,6 +14,7 @@ struct PointsGenerationParameters {
     // TODO(student): add parameters for points generation (ex: poisson disk radius, etc).
     float radius {30.};
     int nbTries {30};
+    bool notInSea {false};
 };
 
 struct AppContext {
