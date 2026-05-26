@@ -97,7 +97,7 @@ void generateHeightmap(AppContext& context) {
     context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const& v, int const, int const) {
         if (v < 0.3f)
         {
-            return color_from({ 70, 130, 180 }); // water
+            return color_from({ 120, 180, 230 }); // water
         }
         else if (v < 0.5f)
         {
@@ -105,7 +105,7 @@ void generateHeightmap(AppContext& context) {
         }
         else
         {
-            return color_from({ 34, 139, 34 }); // grass
+            return color_from({ 84, 189, 84 }); // grass
         }
         
     }, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);

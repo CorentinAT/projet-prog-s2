@@ -51,13 +51,17 @@ void drawImGui(AppContext& context) {
     }
     if(ImGui::Button("Refresh")) {
         generateHeightmap(context);
-        draw3DScene(context);
-        
+        regenerateMeshFromImage(context);
+        generateObjectsPositions(context);
     }
 
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Cube Scale", &context.cubeScale, 0.01f, 1.0f);
         ImGui::SliderInt("Octaves", &params.octaves, 5, 12);
+        ImGui::SliderFloat("Lacunarity", &params.lacunarity, 0.5f, 2.0f);
+        ImGui::SliderFloat("Frequency", &params.frequency, 0.5f, 2.0f);
+        ImGui::SliderFloat("Amplitude", &params.amplitude, 0.1f, 2.0f);
+        ImGui::SliderFloat("Persistence", &params.persistence, 0.5f, 2.0f);
     }
 }
 
