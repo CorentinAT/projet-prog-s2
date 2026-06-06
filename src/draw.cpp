@@ -75,6 +75,7 @@ void drawImGui(AppContext& context) {
         ImGui::SliderFloat("Frequency", &params.frequency, 0.5f, 2.0f);
         ImGui::SliderFloat("Amplitude", &params.amplitude, 0.1f, 2.0f);
         ImGui::SliderFloat("Persistence", &params.persistence, 0.5f, 2.0f);
+        ImGui::SliderInt("Seed", &params.noiseSeed, 1, 20);
     }
 }
 

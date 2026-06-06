@@ -20,6 +20,12 @@ struct ImageGenerationParameters {
     float maxAmplitude = 0.0f;
 };
 
+struct RadialMaskGenerationParameters
+{
+    float mask_amplitude{2.f};
+    float mask_scale{4.5f};
+};
+
 
 struct PointsGenerationParameters {
     // TODO(student): add parameters for points generation (ex: poisson disk radius, etc).

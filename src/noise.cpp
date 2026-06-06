@@ -58,6 +58,17 @@ float perlinNoiseSeeded(glm::vec2 const& position, int seed) {
     return glm::perlin(position + cachedOffset);
 }
 
+
+float radialMask(glm::vec2 const &p, RadialMaskGenerationParameters &radialMaskGenerationParameters)
+{
+    float normalize_x = (p.x - 0.5) / 0.5;
+    float normalize_y = (p.y - 0.5) / 0.5;
+    float scale = radialMaskGenerationParameters.mask_scale;
+    float amplitude = radialMaskGenerationParameters.mask_amplitude;
+    float gaussian = amplitude * std::exp(scale * (-normalize_x * normalize_x - normalize_y * normalize_y));
+    return gaussian;
+}
+
 float octaveNoise(glm::vec2 const& position, std::function<float(glm::vec2 const&)> noiseFunction, AppContext& context) {
     // TODO(student): Implement octave/fractal noise accumulation.
     // Temporary fallback return directly from the provided noise function for testing.
