@@ -91,7 +91,7 @@ void generateObjectsPositions(AppContext& context) {
     {
         float height = sampleHeightmap(context, p.x, p.y);
 
-        if(height >= 0.3 || !context.pointsGenerationParameters.notInSea) {
+        if(height >= 0.7 || !context.pointsGenerationParameters.onlyOnTop) {
             context.objectPositions.emplace_back(
                 p.x, // x
                 p.y, // y

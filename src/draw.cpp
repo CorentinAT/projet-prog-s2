@@ -55,7 +55,7 @@ void drawImGui(AppContext& context) {
     if (ImGui::CollapsingHeader("Points placement", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Minimal radius", &context.pointsGenerationParameters.radius, 5.0f, 100.0f);
         ImGui::SliderInt("Tries before reject", &context.pointsGenerationParameters.nbTries, 1, 50);
-        ImGui::Checkbox("No point in sea", &context.pointsGenerationParameters.notInSea);
+        ImGui::Checkbox("Points only on top", &context.pointsGenerationParameters.onlyOnTop);
     }
 
     auto& params = context.imageGenerationParameters;
