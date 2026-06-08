@@ -123,15 +123,15 @@ float sampleHeightmap(AppContext const& context, float u, float v)
     return static_cast<float>(c.r)/255.0f;
 }
 
-Color ColorGradient(Color color_a, Color color_b, float gain)
+Color ColorGradient(Color color_a, Color color_b, float color_gain)
 {
     //gain = std::clamp(gain, 0.0f, 1.0f);
     Color final;
 
-    final.r = static_cast<unsigned char>(color_a.r + (color_b.r - color_a.r) * gain);
-    final.g = static_cast<unsigned char>(color_a.g + (color_b.g - color_a.g) * gain);
-    final.b = static_cast<unsigned char>(color_a.b + (color_b.b - color_a.b) * gain);
-    final.a = static_cast<unsigned char>(color_a.a + (color_b.a - color_a.a) * gain);
+    final.r = static_cast<unsigned char>(color_a.r + (color_b.r - color_a.r) * color_gain);
+    final.g = static_cast<unsigned char>(color_a.g + (color_b.g - color_a.g) * color_gain);
+    final.b = static_cast<unsigned char>(color_a.b + (color_b.b - color_a.b) * color_gain);
+    final.a = static_cast<unsigned char>(color_a.a + (color_b.a - color_a.a) * color_gain);
 
     return final;
 }
@@ -164,6 +164,7 @@ void generateHeightmap(AppContext& context) {
                 [&](glm::vec2 const& q)->float {
                     return perlinNoiseSeeded(q, context.imageGenerationParameters.noiseSeed);
                 },
+                context.imageGenerationParameters.scale,
                 context
             );
 
@@ -174,7 +175,7 @@ void generateHeightmap(AppContext& context) {
 
     // exemple conversion from heightmap to color image
     context.image = TransformImage<float, Color>(context.heightmapImage, [&](float const& v, int const, int const) {
-        Color deep_water = color_from({ 128, 119, 165 }); // water
+        Color deep_water = color_from({ 108, 99, 145 }); // water
         // Color lessdeep_water = color_from({ 248, 200, 244 }); // water
         Color wet_sand = color_from({ 170, 114, 134 }); 
         Color dry_sand = color_from({ 255, 197, 181 }); 
@@ -186,19 +187,22 @@ void generateHeightmap(AppContext& context) {
         }
         else if (v < 0.3f)
         {
-            float gain = (v - 0.01f) / 0.29f;
-            return ColorGradient(deep_water, wet_sand, gain);
+            float color_gain = (v - 0.01f) / 0.29f;
+            return ColorGradient(deep_water, wet_sand, color_gain);
         }
 
         else if (v < 0.7f)
         {
-            float gain = (v - 0.01f) / 0.69f;
-            return ColorGradient(wet_sand, dry_sand, gain);
+            float color_gain = (v - 0.01f) / 0.69f;
+            return ColorGradient(wet_sand, dry_sand, color_gain);
         }
-        else
+        else if (v < 1.0f)
         {
-            float gain = (v - 0.01f) / 1.0f;
-            return ColorGradient(dry_sand, top, gain);
+            float color_gain = (v - 0.01f) / 0.990f;
+            return ColorGradient(dry_sand, top, color_gain);
+        } else 
+        {
+            return top;
         }
         
     }, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);

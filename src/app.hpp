@@ -10,7 +10,6 @@ struct ImageGenerationParameters {
     float noiseScale { 4.0f };
     int resolution { 256 };
     int octaves = 12;
-    float amplitude = 1.0f;
     float frequency = 1.0f;
     float persistence = 0.5f;
     float lacunarity = 1.5f;
@@ -65,6 +64,10 @@ struct AppContext {
 
     // Parameters for island generation
     ImageGenerationParameters imageGenerationParameters;
+    // Background color for the scene (editable via ImGui)
+    Color bgColor { 128, 119, 165, 255 };
+    
+    RadialMaskGenerationParameters radialMaskGenerationParameters;
 };
 
 Matrix getTerrainCenteringMatrix(AppContext const& context);

@@ -69,7 +69,7 @@ float radialMask(glm::vec2 const &p, RadialMaskGenerationParameters &radialMaskG
     return gaussian;
 }
 
-float octaveNoise(glm::vec2 const& position, std::function<float(glm::vec2 const&)> noiseFunction, AppContext& context) {
+float octaveNoise(glm::vec2 const& position, std::function<float(glm::vec2 const&)> noiseFunction, float scale, AppContext& context) {
     // TODO(student): Implement octave/fractal noise accumulation.
     // Temporary fallback return directly from the provided noise function for testing.
     /* int const octaves = 12;
@@ -88,11 +88,11 @@ float octaveNoise(glm::vec2 const& position, std::function<float(glm::vec2 const
 
     for (int i = 0; i < params.octaves; ++i) {
     params.total += noiseFunction(position * params.frequency)
-           * params.amplitude;
+            * params.gain * params.scale;
 
-    params.maxAmplitude += params.amplitude;
+    params.maxAmplitude += params.scale;
 
-    params.amplitude *= params.persistence;
+    params.scale *= params.persistence;
     params.frequency *= params.lacunarity;
 }
 

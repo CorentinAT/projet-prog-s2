@@ -9,7 +9,7 @@
 #include "raymath.h"
 
 void draw3DScene(AppContext& context) {
-    ClearBackground(RAYWHITE);
+    ClearBackground((Color){ 108, 99, 145 });
     
     BeginMode3D(context.camera);
 
@@ -18,7 +18,7 @@ void draw3DScene(AppContext& context) {
 
     DrawModel(context.model, terrainCenterOffset, 1.0f, WHITE);
     drawLollipops(context, terrainCentering);
-    DrawGrid(20, 1.0f);
+    // DrawGrid(20, 1.0f);
 
     EndMode3D();
 }
@@ -59,6 +59,7 @@ void drawImGui(AppContext& context) {
     }
 
     auto& params = context.imageGenerationParameters;
+    auto& mask_params = context.radialMaskGenerationParameters;
     if(ImGui::Button("Generate random positions")) {
         generateObjectsPositions(context);
     }
@@ -72,17 +73,21 @@ void drawImGui(AppContext& context) {
         ImGui::SliderFloat("Lollipop Scale", &context.lollipopScale, 0.05f, 0.5f);
         ImGui::SliderInt("Octaves", &params.octaves, 5, 12);
         ImGui::SliderFloat("Lacunarity", &params.lacunarity, 0.5f, 2.0f);
+        ImGui::SliderFloat("Gain", &params.gain, 0.5f, 10.0f);
+        ImGui::SliderFloat("Noise Scale", &params.scale, 0.5f, 10.0f);
         ImGui::SliderFloat("Frequency", &params.frequency, 0.5f, 2.0f);
-        ImGui::SliderFloat("Amplitude", &params.amplitude, 0.1f, 2.0f);
         ImGui::SliderFloat("Persistence", &params.persistence, 0.5f, 2.0f);
         ImGui::SliderInt("Seed", &params.noiseSeed, 1, 20);
+
+        ImGui::SliderFloat("Island Size", &mask_params.mask_scale, 0.5f, 66.0f);
+        ImGui::SliderFloat("Island Amplitude", &mask_params.mask_amplitude, 0.5f, 63.0f);
     }
 }
 
 void drawRaylibUI(AppContext& context) {
     int screenWidth { GetScreenWidth() };
     
-    float wanted_size { 400.f };
+    float wanted_size { 500.f };
     float scale_factor { wanted_size / std::max(context.texture.width, context.texture.height) };
     float const preview_x { screenWidth - wanted_size - 20.f };
     float const preview_y { 20.f };
