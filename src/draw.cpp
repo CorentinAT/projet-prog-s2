@@ -17,28 +17,28 @@ void draw3DScene(AppContext& context) {
     Vector3 const terrainCenterOffset { terrainCentering.m12, terrainCentering.m13, terrainCentering.m14 };
 
     DrawModel(context.model, terrainCenterOffset, 1.0f, WHITE);
-    drawCows(context, terrainCentering);
+    drawLollipops(context, terrainCentering);
     DrawGrid(20, 1.0f);
 
     EndMode3D();
 }
 
-void drawCows(AppContext const& context, Matrix const& terrainCentering)
+void drawLollipops(AppContext const& context, Matrix const& terrainCentering)
 {
     if (context.objectPositions.empty()) {
         return;
     }
 
-    float const cowHalfHeight { 0.5f * context.cowScale };
+    float const lollipopHalfHeight { 0.5f * context.lollipopScale };
 
     for (glm::vec3 const& pos : context.objectPositions) {
         Matrix const objectTranslation { MatrixTranslate(
             pos.x * context.terrainSize.x,
-            pos.z * context.terrainSize.y + cowHalfHeight,
+            pos.z * context.terrainSize.y + lollipopHalfHeight,
             pos.y * context.terrainSize.z
         )};
         Matrix const centeredTranslation { MatrixMultiply(objectTranslation, terrainCentering) };
-        Matrix const scale { MatrixScale(context.cowScale, context.cowScale, context.cowScale) };
+        Matrix const scale { MatrixScale(context.lollipopScale, context.lollipopScale, context.lollipopScale) };
         Matrix const transform { MatrixMultiply(scale, centeredTranslation) };
 
         Vector3 pos3d {
@@ -47,7 +47,7 @@ void drawCows(AppContext const& context, Matrix const& terrainCentering)
             centeredTranslation.m14
         };
         DrawModelEx(context.objectModel, pos3d, {0,1,0}, 0.0f,
-        {context.cowScale, context.cowScale, context.cowScale}, WHITE);
+        {context.lollipopScale, context.lollipopScale, context.lollipopScale}, WHITE);
     }
 }
 
@@ -69,7 +69,7 @@ void drawImGui(AppContext& context) {
     }
 
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen)) {
-        ImGui::SliderFloat("Cow Scale", &context.cowScale, 0.005f, 0.1f);
+        ImGui::SliderFloat("Lollipop Scale", &context.lollipopScale, 0.05f, 0.5f);
         ImGui::SliderInt("Octaves", &params.octaves, 5, 12);
         ImGui::SliderFloat("Lacunarity", &params.lacunarity, 0.5f, 2.0f);
         ImGui::SliderFloat("Frequency", &params.frequency, 0.5f, 2.0f);

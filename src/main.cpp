@@ -28,7 +28,7 @@ int main() {
 
     AppContext context {};
 
-    std::filesystem::path const modelPath { pathUtils::make_absolute_path("resources/cow.glb") };
+    std::filesystem::path const modelPath { pathUtils::make_absolute_path("resources/lollipop.glb") };
     context.objectModel = LoadModel(modelPath.string().c_str());
     
     // Define our custom camera to look into our 3d world

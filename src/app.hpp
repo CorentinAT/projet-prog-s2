@@ -23,7 +23,7 @@ struct ImageGenerationParameters {
 
 struct PointsGenerationParameters {
     // TODO(student): add parameters for points generation (ex: poisson disk radius, etc).
-    float radius {30.};
+    float radius {50.};
     int nbTries {30};
     bool notInSea {true};
 };
@@ -48,11 +48,11 @@ struct AppContext {
 
     std::vector<glm::vec3> objectPositions {};
 
-    // A simple cow mesh and material we use to draw objects on the terrain.
-    Mesh cow {};
-    Material cowMaterial {};
+    // A simple lollipop mesh and material we use to draw objects on the terrain.
+    Mesh lollipop {};
+    Material lollipopMaterial {};
     Model objectModel {};
-    float cowScale { 0.02f };
+    float lollipopScale { 0.2f };
 
     // Parameters for object positions generation
     PointsGenerationParameters pointsGenerationParameters;
