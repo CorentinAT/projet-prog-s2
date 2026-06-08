@@ -63,11 +63,6 @@ void drawImGui(AppContext& context) {
     if(ImGui::Button("Generate random positions")) {
         generateObjectsPositions(context);
     }
-    if(ImGui::Button("Refresh")) {
-        generateHeightmap(context);
-        regenerateMeshFromImage(context);
-        generateObjectsPositions(context);
-    }
 
     if (ImGui::CollapsingHeader("objects", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Lollipop Scale", &context.lollipopScale, 0.05f, 0.5f);
@@ -81,6 +76,12 @@ void drawImGui(AppContext& context) {
 
         ImGui::SliderFloat("Island Size", &mask_params.mask_scale, 0.5f, 66.0f);
         ImGui::SliderFloat("Island Amplitude", &mask_params.mask_amplitude, 0.5f, 63.0f);
+    }
+
+    if(ImGui::Button("Refresh Island")) {
+        generateHeightmap(context);
+        regenerateMeshFromImage(context);
+        generateObjectsPositions(context);
     }
 }
 
