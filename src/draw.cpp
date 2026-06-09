@@ -74,8 +74,8 @@ void drawImGui(AppContext& context) {
         ImGui::SliderFloat("Persistence", &params.persistence, 0.5f, 2.0f);
         ImGui::SliderInt("Seed", &params.noiseSeed, 1, 20);
 
-        ImGui::SliderFloat("Island Size", &mask_params.mask_scale, 0.5f, 66.0f);
-        ImGui::SliderFloat("Island Amplitude", &mask_params.mask_amplitude, 0.5f, 63.0f);
+        ImGui::SliderFloat("Island Size", &mask_params.mask_scale, 0.1f, 20.0f);
+        ImGui::SliderFloat("Island Amplitude", &mask_params.mask_amplitude, 0.1f, 20.0f);
     }
 
     if(ImGui::Button("Refresh Island")) {

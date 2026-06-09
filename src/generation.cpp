@@ -158,7 +158,7 @@ void generateHeightmap(AppContext& context) {
     context.heightmapImage = GenImageFromNoiseFunction<float>(resolution, resolution, PIXELFORMAT_UNCOMPRESSED_R32,
         [&](glm::vec2 const& p)->float {
             // TODO(student): implement stack based noise and island mask
-            RadialMaskGenerationParameters maskParams{};
+            auto const& maskParams = context.radialMaskGenerationParameters;
             float noise = octaveNoise(
                 p * context.imageGenerationParameters.noiseScale,
                 [&](glm::vec2 const& q)->float {

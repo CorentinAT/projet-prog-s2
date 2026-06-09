@@ -59,13 +59,13 @@ float perlinNoiseSeeded(glm::vec2 const& position, int seed) {
 }
 
 
-float radialMask(glm::vec2 const &p, RadialMaskGenerationParameters &radialMaskGenerationParameters)
+float radialMask(glm::vec2 const& p, RadialMaskGenerationParameters const& radialMaskGenerationParameters)
 {
-    float normalize_x = (p.x - 0.5) / 0.5;
-    float normalize_y = (p.y - 0.5) / 0.5;
-    float scale = radialMaskGenerationParameters.mask_scale;
-    float amplitude = radialMaskGenerationParameters.mask_amplitude;
-    float gaussian = amplitude * std::exp(scale * (-normalize_x * normalize_x - normalize_y * normalize_y));
+    float const normalize_x = (p.x - 0.5f) / 0.5f;
+    float const normalize_y = (p.y - 0.5f) / 0.5f;
+    float const scale = radialMaskGenerationParameters.mask_scale;
+    float const amplitude = radialMaskGenerationParameters.mask_amplitude;
+    float const gaussian = amplitude * std::exp(scale * (-(normalize_x * normalize_x) - (normalize_y * normalize_y)));
     return gaussian;
 }
 
@@ -79,8 +79,6 @@ float octaveNoise(glm::vec2 const& position, std::function<float(glm::vec2 const
     float const lacunarity = 1.5f;
     float gain = 1.0f;
     float scale = 1.0f;
-    
-
     float total = 0.0f;
     float maxAmplitude = 0.0f;
     */
